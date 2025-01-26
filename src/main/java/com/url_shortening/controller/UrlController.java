@@ -1,6 +1,8 @@
 package com.url_shortening.controller;
 
-import com.url_shortening.model.Url;
+import com.url_shortening.dto.UrlRequestDto;
+import com.url_shortening.dto.UrlResponseDto;
+import com.url_shortening.dto.UrlStatsResponseDto;
 import com.url_shortening.service.UrlService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,19 +20,29 @@ public class UrlController {
     }
 
     @PostMapping()
-    public ResponseEntity<Url> shorten(@RequestBody Url url) {
+    public ResponseEntity<UrlResponseDto> shorten(@RequestBody UrlRequestDto url) {
         try {
-            Url url1 = urlService.saveUrl(url);
-            return ResponseEntity.created(URI.create("/api/v1/shorten/" + url1.getId())).body(url1);
+            UrlResponseDto url1 = urlService.saveUrl(url);
+            return ResponseEntity.created(URI.create("/api/v1/shorten/" + url1.id())).body(url1);
         }catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
     @GetMapping("/{shortUrl}")
-    public ResponseEntity<Url> getUrlByShorten(@PathVariable String shortUrl) {
+    public ResponseEntity<UrlResponseDto> getUrl(@PathVariable String shortUrl) {
         try{
-            Url url = urlService.findUrlByShortUrl(shortUrl);
+            UrlResponseDto url = urlService.getUrl(shortUrl);
+            return ResponseEntity.ok(url);
+        }catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{shortUrl}/stats")
+    public ResponseEntity<UrlStatsResponseDto> getUrlStats(@PathVariable String shortUrl) {
+        try{
+            UrlStatsResponseDto url = urlService.getUrlStats(shortUrl);
             return ResponseEntity.ok(url);
         }catch (Exception e) {
             return ResponseEntity.notFound().build();
@@ -38,9 +50,9 @@ public class UrlController {
     }
 
     @PutMapping("{shortUrl}")
-    public ResponseEntity<Url> updateUrl(@PathVariable String shortUrl, @RequestBody Url url) {
+    public ResponseEntity<UrlResponseDto> updateUrl(@PathVariable String shortUrl, @RequestBody UrlRequestDto url) {
         try {
-            Url urlUpdated = urlService.updateUrl(shortUrl, url);
+            UrlResponseDto urlUpdated = urlService.updateUrl(shortUrl, url);
             return ResponseEntity.ok(urlUpdated);
         }catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -48,7 +60,7 @@ public class UrlController {
     }
 
     @DeleteMapping("{shortUrl}")
-    public ResponseEntity<Url> deleteUrl(@PathVariable String shortUrl) {
+    public ResponseEntity deleteUrl(@PathVariable String shortUrl) {
         try {
             urlService.deleteUrl(shortUrl);
             return ResponseEntity.noContent().build();

@@ -1,11 +1,14 @@
 package com.url_shortening.service;
 
+import com.url_shortening.dto.UrlRequestDto;
+import com.url_shortening.dto.UrlResponseDto;
+import com.url_shortening.dto.UrlStatsResponseDto;
+import com.url_shortening.mapper.UrlMapper;
 import com.url_shortening.model.Url;
 import com.url_shortening.repository.UrlRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -18,30 +21,40 @@ public class UrlService {
     }
 
     @Transactional
-    public Url saveUrl(Url url) {
+    public UrlResponseDto saveUrl(UrlRequestDto url) {
+        Url entity = UrlMapper.toEntity(url);
         Random random = new Random();
         random.longs(5L);
         String randomValue = String.valueOf(random.nextInt());
-        url.setShortUrl(randomValue);
-        url.setAccessCount(0);
-        return repository.save(url);
+        entity.setShortUrl(randomValue);
+        entity.setAccessCount(0);
+        repository.save(entity);
+        return UrlMapper.toResponseDto(entity);
     }
 
     @Transactional
-    public Url findUrlByShortUrl(String shortUrl) {
+    public UrlResponseDto getUrl(String shortUrl) {
         Url newUrl = repository.getReferenceByShortUrl(shortUrl);
         accessCount(newUrl);
 
-        return newUrl;
+        return UrlMapper.toResponseDto(newUrl);
     }
 
     @Transactional
-    public Url updateUrl(String shortUrl, Url newUrl) {
+    public UrlStatsResponseDto getUrlStats(String shortUrl) {
+        Url newUrl = repository.getReferenceByShortUrl(shortUrl);
+        accessCount(newUrl);
+
+        return UrlMapper.toStatsResponseDto(newUrl);
+    }
+
+    @Transactional
+    public UrlResponseDto updateUrl(String shortUrl, UrlRequestDto newUrl) {
         Url url = repository.getReferenceByShortUrl(shortUrl);
         if (newUrl != null) {
-            url.setUrl(newUrl.getUrl());
+            url.setUrl(newUrl.url());
         }
-        return url;
+        return UrlMapper.toResponseDto(url);
     }
 
     @Transactional
