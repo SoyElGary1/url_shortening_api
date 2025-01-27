@@ -20,7 +20,7 @@ public class UrlController {
     }
 
     @PostMapping()
-    public ResponseEntity<UrlResponseDto> shorten(@RequestBody UrlRequestDto url) {
+    public ResponseEntity<UrlResponseDto> saveUrl(@RequestBody UrlRequestDto url) {
         try {
             UrlResponseDto url1 = urlService.saveUrl(url);
             return ResponseEntity.created(URI.create("/api/v1/shorten/" + url1.id())).body(url1);

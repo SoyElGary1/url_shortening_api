@@ -43,8 +43,6 @@ public class UrlService {
     @Transactional
     public UrlStatsResponseDto getUrlStats(String shortUrl) {
         Url newUrl = repository.getReferenceByShortUrl(shortUrl);
-        accessCount(newUrl);
-
         return UrlMapper.toStatsResponseDto(newUrl);
     }
 
