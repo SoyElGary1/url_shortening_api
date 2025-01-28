@@ -4,6 +4,7 @@ import com.url_shortening.dto.UrlRequestDto;
 import com.url_shortening.dto.UrlResponseDto;
 import com.url_shortening.dto.UrlStatsResponseDto;
 import com.url_shortening.service.UrlService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class UrlController {
     }
 
     @PostMapping()
-    public ResponseEntity<UrlResponseDto> saveUrl(@RequestBody UrlRequestDto url) {
+    public ResponseEntity<UrlResponseDto> saveUrl(@RequestBody @Valid UrlRequestDto url) {
         try {
             UrlResponseDto url1 = urlService.saveUrl(url);
             return ResponseEntity.created(URI.create("/api/v1/shorten/" + url1.id())).body(url1);
@@ -50,7 +51,8 @@ public class UrlController {
     }
 
     @PutMapping("{shortUrl}")
-    public ResponseEntity<UrlResponseDto> updateUrl(@PathVariable String shortUrl, @RequestBody UrlRequestDto url) {
+    public ResponseEntity<UrlResponseDto> updateUrl(@PathVariable String shortUrl, @RequestBody @Valid UrlRequestDto url) {
+        
         try {
             UrlResponseDto urlUpdated = urlService.updateUrl(shortUrl, url);
             return ResponseEntity.ok(urlUpdated);
