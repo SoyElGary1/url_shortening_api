@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/v1/shorten")
+@RequestMapping("/api/v1/shorten/")
 public class UrlController {
 
     private UrlService urlService;
@@ -30,7 +30,7 @@ public class UrlController {
         }
     }
 
-    @GetMapping("/{shortUrl}")
+    @GetMapping("{shortUrl}")
     public ResponseEntity<UrlResponseDto> getUrl(@PathVariable String shortUrl) {
         try{
             UrlResponseDto url = urlService.getUrl(shortUrl);
@@ -40,7 +40,7 @@ public class UrlController {
         }
     }
 
-    @GetMapping("/{shortUrl}/stats")
+    @GetMapping("{shortUrl}/stats")
     public ResponseEntity<UrlStatsResponseDto> getUrlStats(@PathVariable String shortUrl) {
         try{
             UrlStatsResponseDto url = urlService.getUrlStats(shortUrl);
