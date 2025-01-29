@@ -2,6 +2,9 @@
 
 Este proyecto es una API REST desarrollada con **Spring Boot** que permite acortar URLs y realizar operaciones CRUD sobre estas URLs. También proporciona estadísticas de acceso para cada URL acortada.
 
+## Frontend para consumir la API 
+[Frontend de Acortador de URLs](https://github.com/SoyElGary1/Frontend-de-Acortador-de-URLs)
+
 ## Características
 
 - Crear una URL acortada.
