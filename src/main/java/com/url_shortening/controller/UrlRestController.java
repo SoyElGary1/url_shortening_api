@@ -5,58 +5,68 @@ import com.url_shortening.dto.UrlResponseDto;
 import com.url_shortening.dto.UrlStatsResponseDto;
 import com.url_shortening.service.UrlService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/v1/shorten/")
-public class UrlController {
+@RequestMapping("/shorten/")
+public class UrlRestController {
 
     private UrlService urlService;
 
-    public UrlController(UrlService urlService) {
+    public UrlRestController(UrlService urlService) {
         this.urlService = urlService;
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<UrlResponseDto> saveUrl(@RequestBody @Valid UrlRequestDto url) {
         try {
-            UrlResponseDto url1 = urlService.saveUrl(url);
-            return ResponseEntity.created(URI.create("/api/v1/shorten/" + url1.id())).body(url1);
-        }catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            String baseUrl = "http://localhost:8080/redirect/";
+
+            UrlResponseDto savedUrl = urlService.saveUrl(url);
+            if (savedUrl == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+
+            return ResponseEntity.created(URI.create(baseUrl + savedUrl.shortUrl())).body(savedUrl);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
+
     @GetMapping("{shortUrl}")
     public ResponseEntity<UrlResponseDto> getUrl(@PathVariable String shortUrl) {
-        try{
+        try {
             UrlResponseDto url = urlService.getUrl(shortUrl);
             return ResponseEntity.ok(url);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("{shortUrl}/stats")
     public ResponseEntity<UrlStatsResponseDto> getUrlStats(@PathVariable String shortUrl) {
-        try{
+        try {
             UrlStatsResponseDto url = urlService.getUrlStats(shortUrl);
             return ResponseEntity.ok(url);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PutMapping("{shortUrl}")
     public ResponseEntity<UrlResponseDto> updateUrl(@PathVariable String shortUrl, @RequestBody @Valid UrlRequestDto url) {
-        
+
         try {
             UrlResponseDto urlUpdated = urlService.updateUrl(shortUrl, url);
             return ResponseEntity.ok(urlUpdated);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
@@ -66,7 +76,7 @@ public class UrlController {
         try {
             urlService.deleteUrl(shortUrl);
             return ResponseEntity.noContent().build();
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }

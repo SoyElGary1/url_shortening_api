@@ -9,7 +9,7 @@ import com.url_shortening.repository.UrlRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class UrlService {
@@ -22,11 +22,15 @@ public class UrlService {
 
     @Transactional
     public UrlResponseDto saveUrl(UrlRequestDto url) {
+        if (url.url() == null || url.url().isEmpty()) {
+            throw new IllegalArgumentException("URL cannot be null or empty");
+        }
+        String shortUrlId;
+        do {
+            shortUrlId = UUID.randomUUID().toString().substring(0, 8);
+        } while (repository.existsByShortUrl(shortUrlId));
         Url entity = UrlMapper.toEntity(url);
-        Random random = new Random();
-        random.longs(5L);
-        String randomValue = String.valueOf(random.nextInt());
-        entity.setShortUrl(randomValue);
+        entity.setShortUrl(shortUrlId);
         entity.setAccessCount(0);
         repository.save(entity);
         return UrlMapper.toResponseDto(entity);
