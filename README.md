@@ -5,7 +5,8 @@ Este proyecto es una API REST desarrollada con **Spring Boot** que permite acort
 ## Características
 
 - Crear una URL acortada.
-- Recuperar una URL original a partir de su versión acortada.
+- Redirigir a la URL original mediante su versión acortada.
+- Recuperar metadatos de una URL acortada.
 - Obtener estadísticas de acceso de una URL acortada.
 - Actualizar una URL acortada.
 - Eliminar una URL acortada.
@@ -56,43 +57,48 @@ Este proyecto es una API REST desarrollada con **Spring Boot** que permite acort
   {
     "id": 1,
     "url": "https://example.com",
-    "shortUrl": "349936126",
+    "shortUrl": "47fe3af5",
     "createdAt": "2025-01-26T12:00:00",
     "updatedAt": "2025-01-26T12:00:00"
   }
   ```
 
-### 2. Recuperar una URL original
-- **URL:** `/api/v1/shorten/{shortUrl}`
+### 2. Redirigir a la URL original
+- **URL:** `/redirect/{shortUrl}`
+- **Método:** `GET`
+- **Descripción:** Redirige automáticamente a la URL original asociada con la URL acortada.
+
+### 3. Recuperar una URL original
+- **URL:** `/shorten/{shortUrl}`
 - **Método:** `GET`
 - **Respuesta:**
   ```json
   {
     "id": 1,
     "url": "https://example.com",
-    "shortUrl": "349936126",
+    "shortUrl": "47fe3af5",
     "createdAt": "2025-01-26T12:00:00",
     "updatedAt": "2025-01-26T12:00:00"
   }
   ```
 
-### 3. Obtener estadísticas de una URL acortada
-- **URL:** `/api/v1/shorten/{shortUrl}/stats`
+### 4. Obtener estadísticas de una URL acortada
+- **URL:** `/shorten/{shortUrl}/stats`
 - **Método:** `GET`
 - **Respuesta:**
   ```json
   {
     "id": 1,
     "url": "https://example.com",
-    "shortUrl": "349936126",
+    "shortUrl": "47fe3af5",
     "createdAt": "2025-01-26T12:00:00",
     "updatedAt": "2025-01-26T12:00:00",
     "accessCount": 42
   }
   ```
 
-### 4. Actualizar una URL acortada
-- **URL:** `/api/v1/shorten/{shortUrl}`
+### 5. Actualizar una URL acortada
+- **URL:** `/shorten/{shortUrl}`
 - **Método:** `PUT`
 - **Cuerpo:**
   ```json
@@ -105,14 +111,14 @@ Este proyecto es una API REST desarrollada con **Spring Boot** que permite acort
   {
     "id": 1,
     "url": "https://updated-example.com",
-    "shortUrl": "349936126",
+    "shortUrl": "47fe3af5",
     "createdAt": "2025-01-26T12:00:00",
     "updatedAt": "2025-01-26T13:00:00"
   }
   ```
 
-### 5. Eliminar una URL acortada
-- **URL:** `/api/v1/shorten/{shortUrl}`
+### 6. Eliminar una URL acortada
+- **URL:** `/shorten/{shortUrl}`
 - **Método:** `DELETE`
 - **Respuesta:**
     - **204 No Content** si la URL fue eliminada correctamente.
@@ -137,7 +143,6 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 ```
-https://roadmap.sh/projects/url-shortening-service
 
 ## Autor
 
