@@ -44,7 +44,7 @@ Este proyecto es una API REST desarrollada con **Spring Boot** que permite acort
 ## Endpoints
 
 ### 1. Crear una URL acortada
-- **URL:** `/api/v1/shorten`
+- **URL:** `/shorten/`
 - **Método:** `POST`
 - **Cuerpo:**
   ```json
@@ -57,7 +57,7 @@ Este proyecto es una API REST desarrollada con **Spring Boot** que permite acort
   {
     "id": 1,
     "url": "https://example.com",
-    "shortUrl": "47fe3af5",
+    "shortUrl": "349936126",
     "createdAt": "2025-01-26T12:00:00",
     "updatedAt": "2025-01-26T12:00:00"
   }
@@ -76,7 +76,7 @@ Este proyecto es una API REST desarrollada con **Spring Boot** que permite acort
   {
     "id": 1,
     "url": "https://example.com",
-    "shortUrl": "47fe3af5",
+    "shortUrl": "349936126",
     "createdAt": "2025-01-26T12:00:00",
     "updatedAt": "2025-01-26T12:00:00"
   }
@@ -90,7 +90,7 @@ Este proyecto es una API REST desarrollada con **Spring Boot** que permite acort
   {
     "id": 1,
     "url": "https://example.com",
-    "shortUrl": "47fe3af5",
+    "shortUrl": "349936126",
     "createdAt": "2025-01-26T12:00:00",
     "updatedAt": "2025-01-26T12:00:00",
     "accessCount": 42
@@ -111,7 +111,7 @@ Este proyecto es una API REST desarrollada con **Spring Boot** que permite acort
   {
     "id": 1,
     "url": "https://updated-example.com",
-    "shortUrl": "47fe3af5",
+    "shortUrl": "349936126",
     "createdAt": "2025-01-26T12:00:00",
     "updatedAt": "2025-01-26T13:00:00"
   }
@@ -129,6 +129,16 @@ Este proyecto es una API REST desarrollada con **Spring Boot** que permite acort
 - **Spring Boot Starter Data JPA**: Para interactuar con la base de datos.
 - **PostgreSQL Driver**: Para conectar con PostgreSQL.
 - **Spring Boot Starter Validation**: Para validar datos de entrada.
+- **Springdoc OpenAPI Starter WebMVC UI**: Para generar una interfaz gráfica de la documentación de la API con Swagger UI.
+- **Springdoc OpenAPI Starter WebMVC API**: Para exponer la documentación OpenAPI de la API.
+
+## Documentación de la API con Swagger
+
+La API incluye documentación generada automáticamente con **Springdoc OpenAPI**. Para acceder a la interfaz Swagger UI, visita la siguiente URL después de iniciar la aplicación:
+
+[Swagger UI](http://localhost:8080/swagger-ui/index.html)
+
+http://localhost:8080/swagger-ui/index.html
 
 ## Configuración de la base de datos
 
